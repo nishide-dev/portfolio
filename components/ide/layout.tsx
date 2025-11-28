@@ -1,14 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import { fileSystem } from "@/lib/data"
+import type { FileData } from "@/lib/data"
 import { ActivityBar } from "./activity-bar"
 import { EditorArea } from "./editor-area"
 import { StatusBar } from "./status-bar"
 import { Terminal } from "./terminal"
 import { TitleBar } from "./title-bar"
 
-export function IdeLayout() {
+interface IdeLayoutProps {
+  initialFileSystem: Record<string, FileData>
+}
+
+export function IdeLayout({ initialFileSystem }: IdeLayoutProps) {
+  const [fileSystem] = useState(initialFileSystem)
   const [openTabs, setOpenTabs] = useState<string[]>([])
   const [activeTabId, setActiveTabId] = useState<string | null>(null)
   const [history, setHistory] = useState<
@@ -18,6 +23,22 @@ export function IdeLayout() {
   const activeFile = activeTabId
     ? Object.values(fileSystem).find((f) => f.id === activeTabId)
     : null
+
+  const openFile = (fileId: string) => {
+    // Remove leading slash if present to match ID format
+    const id = fileId.startsWith("/") ? fileId.slice(1) : fileId
+    // Check if file exists with or without leading slash in ID
+    const file = Object.values(fileSystem).find((f) => f.id === id || f.id === fileId)
+
+    if (file) {
+      if (!openTabs.includes(file.id)) {
+        setOpenTabs((prev) => [...prev, file.id])
+      }
+      setActiveTabId(file.id)
+      return true
+    }
+    return false
+  }
 
   const handleCommand = (cmd: string) => {
     setHistory((prev) => [...prev, { type: "command", content: cmd }])
@@ -33,7 +54,8 @@ export function IdeLayout() {
       return
     }
 
-    const fileKey = Object.keys(fileSystem).find((key) => key === cmd)
+    // Try to find file by command (e.g. /about) or by ID
+    const fileKey = Object.keys(fileSystem).find((key) => key === cmd || key === `/${cmd}`)
     if (fileKey) {
       const file = fileSystem[fileKey]
       setHistory((prev) => [
@@ -45,10 +67,7 @@ export function IdeLayout() {
       ])
 
       setTimeout(() => {
-        if (!openTabs.includes(file.id)) {
-          setOpenTabs((prev) => [...prev, file.id])
-        }
-        setActiveTabId(file.id)
+        openFile(file.id)
       }, 300)
     } else {
       setHistory((prev) => [
@@ -79,13 +98,20 @@ export function IdeLayout() {
         <ActivityBar />
         <div className="flex-1 flex flex-col min-w-0 bg-ide-bg">
           <EditorArea
+            fileSystem={fileSystem}
             openTabs={openTabs}
             activeTabId={activeTabId}
             onTabClick={setActiveTabId}
             onTabClose={handleTabClose}
+            onOpenFile={openFile}
           />
           <div className="h-1 bg-ide-border cursor-row-resize hover:bg-ide-accent transition-colors" />
-          <Terminal onCommand={handleCommand} onClear={() => setHistory([])} history={history} />
+          <Terminal
+            fileSystem={fileSystem}
+            onCommand={handleCommand}
+            onClear={() => setHistory([])}
+            history={history}
+          />{" "}
         </div>
       </div>
       <StatusBar lang={activeFile?.lang} />

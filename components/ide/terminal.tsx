@@ -1,16 +1,17 @@
 "use client"
 
-import { Plus, Trash, X } from "lucide-react"
+import { ChevronRight, Columns } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { fileSystem } from "@/lib/data"
+import type { FileData } from "@/lib/data"
 
 interface TerminalProps {
+  fileSystem: Record<string, FileData>
   onCommand: (cmd: string) => void
   onClear: () => void
   history: { type: "command" | "output" | "error"; content: string }[]
 }
 
-export function Terminal({ onCommand, onClear, history }: TerminalProps) {
+export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalProps) {
   const [input, setInput] = useState("")
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
@@ -99,16 +100,22 @@ export function Terminal({ onCommand, onClear, history }: TerminalProps) {
           </span>
         </div>
         <div className="flex gap-3 text-ide-muted items-center">
-          <Plus size={14} className="hover:text-ide-text cursor-pointer transition-colors" />
+          <ChevronRight
+            size={14}
+            className="hover:text-ide-text cursor-pointer transition-colors"
+          />
           <button
             type="button"
             onClick={onClear}
             title="Clear Terminal"
             className="hover:text-ide-text cursor-pointer transition-colors bg-transparent border-none p-0 flex items-center"
           >
-            <Trash size={14} />
+            <Columns size={14} />
           </button>
-          <X size={14} className="hover:text-ide-text cursor-pointer transition-colors" />
+          <ChevronRight
+            size={14}
+            className="hover:text-ide-text cursor-pointer transition-colors"
+          />
         </div>
       </div>
 

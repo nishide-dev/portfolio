@@ -1,5 +1,7 @@
 import { IdeLayout } from "@/components/ide/layout"
+import { getAllFiles } from "@/lib/files"
 
 export default function Home() {
-  return <IdeLayout />
+  const fileSystem = getAllFiles()
+  return <IdeLayout initialFileSystem={fileSystem} />
 }

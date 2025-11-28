@@ -2,7 +2,7 @@
 
 import { Briefcase, ChevronRight, Columns, Mail, Microscope, UserCircle, X } from "lucide-react"
 import ReactMarkdown from "react-markdown"
-import { fileSystem } from "@/lib/data"
+import type { FileData } from "@/lib/data"
 
 // Map icon strings to components
 const IconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -13,13 +13,22 @@ const IconMap: Record<string, React.ComponentType<{ size?: number; className?: s
 }
 
 interface EditorAreaProps {
+  fileSystem: Record<string, FileData>
   openTabs: string[]
   activeTabId: string | null
   onTabClick: (id: string) => void
   onTabClose: (id: string) => void
+  onOpenFile: (id: string) => void
 }
 
-export function EditorArea({ openTabs, activeTabId, onTabClick, onTabClose }: EditorAreaProps) {
+export function EditorArea({
+  fileSystem,
+  openTabs,
+  activeTabId,
+  onTabClick,
+  onTabClose,
+  onOpenFile,
+}: EditorAreaProps) {
   const activeFile = activeTabId
     ? Object.values(fileSystem).find((f) => f.id === activeTabId)
     : null
@@ -119,7 +128,30 @@ export function EditorArea({ openTabs, activeTabId, onTabClick, onTabClose }: Ed
             {/* Markdown Body */}
             <div className="flex-1 overflow-auto p-8 md:p-12">
               <div className="markdown-body max-w-3xl mx-auto">
-                <ReactMarkdown>{activeFile.content}</ReactMarkdown>
+                <ReactMarkdown
+                  components={{
+                    a: ({ href, children }) => {
+                      const isInternal = href?.startsWith("/")
+                      return (
+                        <a
+                          href={href}
+                          onClick={(e) => {
+                            if (isInternal && href) {
+                              e.preventDefault()
+                              onOpenFile(href)
+                            }
+                          }}
+                          target={isInternal ? undefined : "_blank"}
+                          rel={isInternal ? undefined : "noopener noreferrer"}
+                        >
+                          {children}
+                        </a>
+                      )
+                    },
+                  }}
+                >
+                  {activeFile.content}
+                </ReactMarkdown>
               </div>
             </div>
           </div>
