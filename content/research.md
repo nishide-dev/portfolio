@@ -10,7 +10,6 @@ lang: python
 
 **ハイパーグラフ表現学習 (Hypergraph Representation Learning)** と **大規模言語モデル (LLM)** の融合に取り組んでいます。
 
----
 
 ## 🔬 Core Concept: Knowledge Integration
 
@@ -23,7 +22,7 @@ lang: python
 
 研究で使用しているモデル構造の概念コードです。
 
-\`\`\`python
+```python
 import torch
 from torch_geometric.nn import HypergraphConv
 
@@ -47,7 +46,7 @@ class NishideModel(torch.nn.Module):
         struct_emb = self.gnn(chem_graph.x, chem_graph.edge_index)
         
         return torch.cat([text_emb, struct_emb], dim=-1)
-\`\`\`
+```
 
 ## 📚 Publications
 - **言語処理学会 2025**: 異種属性の内容的特徴をハイパーグラフにより統合するエンティティ表現学習

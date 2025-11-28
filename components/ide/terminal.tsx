@@ -17,6 +17,7 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
   const historyBoxRef = useRef<HTMLDivElement>(null)
+  const suggestionsRef = useRef<HTMLDivElement>(null)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Scroll to bottom when history changes
   useEffect(() => {
@@ -28,6 +29,15 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
+
+  useEffect(() => {
+    if (selectedSuggestionIndex >= 0 && suggestionsRef.current) {
+      const activeElement = suggestionsRef.current.children[selectedSuggestionIndex] as HTMLElement
+      if (activeElement) {
+        activeElement.scrollIntoView({ block: "nearest" })
+      }
+    }
+  }, [selectedSuggestionIndex])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
@@ -42,45 +52,46 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
     }
   }
 
-  const handleSuggestionNavigation = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowDown") {
-      e.preventDefault()
-      setSelectedSuggestionIndex((prev) => (prev + 1) % suggestions.length)
-      return true
-    }
-    if (e.key === "ArrowUp") {
-      e.preventDefault()
-      setSelectedSuggestionIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length)
-      return true
-    }
-    if (e.key === "Enter" || e.key === "Tab") {
-      e.preventDefault()
-      const idx = selectedSuggestionIndex >= 0 ? selectedSuggestionIndex : 0
-      const cmd = suggestions[idx]
-      if (e.key === "Enter") {
-        onCommand(cmd)
-        setInput("")
-        setSuggestions([])
-      } else {
-        setInput(cmd)
-      }
-      return true
-    }
-    return false
-  }
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (suggestions.length > 0) {
-      if (handleSuggestionNavigation(e)) return
+      if (e.key === "ArrowDown") {
+        e.preventDefault()
+        setSelectedSuggestionIndex((prev) => (prev + 1) % suggestions.length)
+        return
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault()
+        setSelectedSuggestionIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length)
+        return
+      }
+      if (e.key === "Enter") {
+        e.preventDefault()
+        if (selectedSuggestionIndex >= 0) {
+          const cmd = suggestions[selectedSuggestionIndex]
+          onCommand(cmd)
+          setInput("")
+          setSuggestions([])
+          return
+        }
+      }
+      if (e.key === "Tab") {
+        e.preventDefault()
+        if (selectedSuggestionIndex >= 0) {
+          setInput(suggestions[selectedSuggestionIndex])
+        } else if (suggestions.length > 0) {
+          setInput(suggestions[0])
+        }
+        return
+      }
     }
 
     if (e.key === "Enter") {
       const cmd = input.trim()
       if (cmd) {
         onCommand(cmd)
-        setInput("")
-        setSuggestions([])
       }
+      setInput("")
+      setSuggestions([])
     }
   }
 
@@ -129,7 +140,7 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
             </div>
             <div>
               <div className="text-[10px] font-bold text-ide-accent uppercase tracking-wide">
-                Nishide's Code v2.4
+                Ryusei Nishide v2025
               </div>
               <div className="text-[10px] text-ide-text mt-0.5">Python environment active.</div>
             </div>
@@ -141,7 +152,7 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
           ref={historyBoxRef}
           className="flex-1 overflow-y-auto space-y-1 mb-2 pr-2 text-xs font-medium"
         >
-          <div className="text-ide-muted">Nishide's Code [Version 2.4.0]</div>
+          <div className="text-ide-muted">Ryusei Nishide [Version 2025]</div>
           <div className="text-ide-muted">(c) 2025 Ryusei Nishide. All rights reserved.</div>
           <div className="h-2" />
           <div className="text-ide-muted">
@@ -200,15 +211,15 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
               <div className="px-3 py-1.5 text-[9px] font-bold text-ide-muted uppercase bg-ide-panel border-b border-ide-border">
                 Available Documents
               </div>
-              <div className="max-h-48 overflow-y-auto">
+              <div ref={suggestionsRef} className="max-h-48 overflow-y-auto">
                 {suggestions.map((cmd, index) => {
                   const file = fileSystem[cmd]
                   return (
                     <button
                       type="button"
                       key={cmd}
-                      className={`w-full px-3 py-2 cursor-pointer flex items-center justify-between text-[11px] group transition-colors bg-transparent border-none text-left ${
-                        index === selectedSuggestionIndex ? "bg-ide-selection" : ""
+                      className={`w-full px-3 py-2 cursor-pointer flex items-center justify-between text-[11px] group transition-colors text-left ${
+                        index === selectedSuggestionIndex ? "bg-ide-selection" : "bg-transparent"
                       }`}
                       onClick={() => {
                         onCommand(cmd)

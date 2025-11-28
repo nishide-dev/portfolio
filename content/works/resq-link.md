@@ -18,7 +18,7 @@ lang: javascript
 - **Local LLM**: 端末内で状況判断とアドバイス生成
 - **Mesh Network**: 端末間通信による情報共有
 
-\`\`\`javascript
+```javascript
 // Edge AI Implementation Concept
 const runInference = async (input) => {
   // Offline-first approach
@@ -27,4 +27,4 @@ const runInference = async (input) => {
   }
   return await cloudAPI.generate(input);
 };
-\`\`\`
+```

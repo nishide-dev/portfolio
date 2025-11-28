@@ -11,13 +11,12 @@ lang: markdown
 私は **「食わず嫌いをしない (Voracious Learner)」** エンジニアです。
 研究領域であるAIだけでなく、フロントエンド、バックエンド、インフラまで、課題解決に必要な技術は領域を問わず貪欲に習得します。
 
----
 
 ## 👨‍💻 Engineering Identity
 
 技術を深く理解し、適切に使いこなすことを重視しています。以下は私のスキルセットの定義です。
 
-\`\`\`python
+```python
 class Engineer(Student):
     def __init__(self):
         self.name = "Ryusei Nishide"
@@ -35,7 +34,7 @@ class Engineer(Student):
         一次情報を参照し、技術のインデックスを広げ続ける。
         """
         return "Bridging Theory and Implementation"
-\`\`\`
+```
 
 ## 🚀 Background
 

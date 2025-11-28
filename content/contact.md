@@ -10,7 +10,6 @@ lang: json
 
 開発や研究に関するご相談は、以下のチャネルからご連絡ください。
 
----
 
 ## 📬 Channels
 
@@ -18,10 +17,10 @@ lang: json
 - **X (Twitter)**: [@nishide_dev](https://twitter.com)
 - **Email**: ryusei.nishide@example.com
 
-\`\`\`json
+```json
 {
   "status": "Open to collaboration",
   "location": "Nagoya, Japan",
   "interests": ["Generative AI", "Hypergraphs", "System Design"]
 }
-\`\`\`
+```

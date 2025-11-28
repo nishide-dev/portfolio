@@ -27,6 +27,7 @@
       opacity: 0;
       transform: translateY(5px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
@@ -128,6 +129,7 @@
   border-radius: 6px;
   margin-bottom: 1em;
   border: 1px solid #e6e0d0;
+  white-space: pre;
 }
 
 .markdown-body pre code {

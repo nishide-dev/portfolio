@@ -25,11 +25,11 @@ lang: javascript
 - 処理時間を従来比50%削減
 - チーム開発フローの整備（CI/CD, Code Review）
 
-\`\`\`javascript
+```javascript
 // Example of the document processing pipeline
 const processDocument = async (doc) => {
   const text = await ocr.extract(doc);
   const structure = await llm.analyze(text);
   return db.save(structure);
 };
-\`\`\`
+```

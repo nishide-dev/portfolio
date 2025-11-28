@@ -23,6 +23,33 @@ interface EditorAreaProps {
   onOpenFile: (id: string) => void
 }
 
+function syntaxHighlight(code: string, lang: string) {
+  let html = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
+  if (lang === "python") {
+    html = html
+      .replace(/(#.*)/g, '<span class="token-comment">$1</span>')
+      .replace(/(".*?"|'.*?')/g, '<span class="token-string">$1</span>')
+      .replace(
+        /\b(import|from|class|def|return|if|else|super|try|except|with|as)\b/g,
+        '<span class="token-keyword">$1</span>'
+      )
+      .replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g, '<span class="token-class">$1</span>')
+      .replace(/(@[a-zA-Z0-9_]+)/g, '<span class="token-decorator">$1</span>')
+      .replace(/\b([a-z_][a-zA-Z0-9_]*)(?=\()/g, '<span class="token-function">$1</span>')
+  } else if (lang === "javascript" || lang === "json" || lang === "typescript") {
+    html = html
+      .replace(/(\/\/.*)/g, '<span class="token-comment">$1</span>')
+      .replace(/(".*?")/g, '<span class="token-string">$1</span>')
+      .replace(
+        /\b(import|from|const|let|var|return|export|default|function|async|await)\b/g,
+        '<span class="token-keyword">$1</span>'
+      )
+      .replace(/:/g, '<span class="text-ide-muted">:</span>')
+  }
+  return html
+}
+
 export function EditorArea({
   fileSystem,
   openTabs,
@@ -78,19 +105,19 @@ export function EditorArea({
         {!activeFile ? (
           /* Empty State */
           <div className="absolute inset-0 flex flex-col items-center justify-center text-ide-muted opacity-100 transition-opacity duration-300 z-10 bg-ide-bg">
-            <div className="w-20 h-20 mb-6 text-ide-accent opacity-20">
+            <div className="w-20 h-20 mb-6 text-ide-accent opacity-40">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <title>Zen Mode Logo</title>
                 <path d="M12 2L2 19h20L12 2zm0 3.8L18.4 17H5.6L12 5.8z" />
               </svg>
             </div>
-            <p className="text-sm tracking-[0.2em] uppercase opacity-60 font-bold text-ide-accent">
+            <p className="text-sm tracking-[0.2em] uppercase opacity-80 font-bold text-ide-accent">
               RYUSEI NISHIDE
             </p>
-            <p className="text-[10px] mt-3 opacity-40 font-mono">
+            <p className="text-[10px] mt-3 opacity-60 font-mono">
               Full-Cycle Engineer / Researcher
             </p>
-            <p className="text-[10px] mt-1 opacity-30 font-mono">Type /about to start</p>
+            <p className="text-[10px] mt-1 opacity-50 font-mono">Type /about to start</p>
           </div>
         ) : (
           /* Document Container */
@@ -165,6 +192,27 @@ export function EditorArea({
                           >
                             {children}
                           </a>
+                        )
+                      },
+                      code: ({ className, children, ...props }) => {
+                        const match = /language-(\w+)/.exec(className || "")
+                        const lang = match ? match[1] : ""
+                        if (match) {
+                          return (
+                            <code
+                              className={className}
+                              // biome-ignore lint/security/noDangerouslySetInnerHtml: Syntax highlighting
+                              dangerouslySetInnerHTML={{
+                                __html: syntaxHighlight(String(children).replace(/\n$/, ""), lang),
+                              }}
+                              {...props}
+                            />
+                          )
+                        }
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
                         )
                       },
                     }}
