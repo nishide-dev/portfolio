@@ -9,6 +9,8 @@ export type FileData = {
   lang: "markdown" | "python" | "javascript" | "json" | "typescript" | "mdx"
   content: string
   serializedContent?: MDXRemoteSerializeResult
+  thumbnail?: string
+  tags?: string[]
 }
 
 // Initial empty state or default data if needed

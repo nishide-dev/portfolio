@@ -144,14 +144,15 @@ export function EditorArea({
                     return (
                       // biome-ignore lint/suspicious/noArrayIndexKey: Breadcrumbs have no unique ID
                       <div key={i} className="flex items-center">
-                        <span
-                          className={
+                        <button
+                          type="button"
+                          className={`flex items-center bg-transparent border-none p-0 ${
                             isLast
-                              ? "text-ide-text font-medium"
+                              ? "text-ide-text font-medium cursor-default"
                               : isClickable
                                 ? "hover:text-ide-text cursor-pointer transition-colors"
-                                : "opacity-50"
-                          }
+                                : "opacity-50 cursor-default"
+                          }`}
                           onClick={() => {
                             if (isClickable) {
                               onOpenFile(path)
@@ -159,7 +160,7 @@ export function EditorArea({
                           }}
                         >
                           {file ? file.filename : segment}
-                        </span>
+                        </button>
                         {!isLast && <ChevronRight size={10} className="mx-2 opacity-50" />}
                       </div>
                     )

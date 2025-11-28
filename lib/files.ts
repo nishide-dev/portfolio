@@ -30,6 +30,8 @@ export async function getAllFiles(): Promise<Record<string, FileData>> {
       lang: (data.lang as FileData["lang"]) || (isMdx ? "mdx" : "markdown"),
       content: content,
       serializedContent,
+      thumbnail: data.thumbnail,
+      tags: data.tags,
     }
   }
 

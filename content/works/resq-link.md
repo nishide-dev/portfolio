@@ -4,6 +4,7 @@ filename: resq-link.tsx
 icon: briefcase
 pyModule: works.resq_link
 lang: javascript
+tags: ["JavaScript", "Edge AI"]
 ---
 
 # ResQ-Link
