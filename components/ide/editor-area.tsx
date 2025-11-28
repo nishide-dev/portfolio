@@ -106,17 +106,23 @@ export function EditorArea({
           /* Empty State */
           <div className="absolute inset-0 flex flex-col items-center justify-center text-ide-muted opacity-100 transition-opacity duration-300 z-10 bg-ide-bg">
             <div className="w-20 h-20 mb-6 text-ide-accent opacity-40">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <title>Zen Mode Logo</title>
-                <path d="M12 2L2 19h20L12 2zm0 3.8L18.4 17H5.6L12 5.8z" />
-              </svg>
+              <img
+                src="/github-avatar.png"
+                alt="Zen Mode Logo"
+                className="w-full h-full rounded-full object-cover"
+              />
             </div>
             <p className="text-sm tracking-[0.2em] uppercase opacity-80 font-bold text-ide-accent">
               RYUSEI NISHIDE
             </p>
-            <p className="text-[10px] mt-3 opacity-60 font-mono">
-              Full-Cycle Engineer / Researcher
-            </p>
+            <a
+              href="https://github.com/nishide-dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] mt-3 opacity-60 font-mono hover:text-ide-text hover:opacity-100 transition-all hover:underline"
+            >
+              @nishide-dev
+            </a>
             <p className="text-[10px] mt-1 opacity-50 font-mono">Type /about to start</p>
           </div>
         ) : (

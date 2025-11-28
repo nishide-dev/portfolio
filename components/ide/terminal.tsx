@@ -146,8 +146,8 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
         {/* Decor: Claude Code Box */}
         <div className="absolute top-4 right-4 hidden md:block z-10 pointer-events-none opacity-80">
           <div className="border border-ide-accent/20 bg-ide-accent/5 rounded p-3 flex gap-3 max-w-xs shadow-sm">
-            <div className="w-8 h-8 bg-ide-accent/10 rounded flex items-center justify-center text-ide-accent text-lg font-bold">
-              N
+            <div className="w-8 h-8 bg-ide-accent/10 rounded flex items-center justify-center text-ide-accent text-lg font-bold overflow-hidden">
+              <img src="/github-avatar.png" alt="Avatar" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="text-[10px] font-bold text-ide-accent uppercase tracking-wide">
@@ -164,7 +164,7 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
           className="flex-1 overflow-y-auto space-y-1 mb-2 pr-2 text-xs font-medium"
         >
           <div className="text-ide-muted">Ryusei Nishide [Version 2025]</div>
-          <div className="text-ide-muted">(c) 2025 Ryusei Nishide. All rights reserved.</div>
+          {/* <div className="text-ide-muted">(c) 2025 Ryusei Nishide. All rights reserved.</div> */}
           <div className="h-2" />
           <div className="text-ide-muted">
             Type{" "}
@@ -177,13 +177,12 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
             <div
               // biome-ignore lint/suspicious/noArrayIndexKey: History items have no unique ID
               key={i}
-              className={`animate-fade-in mb-1 ${
-                item.type === "error"
+              className={`animate-fade-in mb-1 ${item.type === "error"
                   ? "text-red-500 pl-6"
                   : item.type === "output"
                     ? "text-ide-muted italic pl-6"
                     : ""
-              }`}
+                }`}
             >
               {item.type === "command" ? (
                 <>
@@ -229,9 +228,8 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
                     <button
                       type="button"
                       key={cmd}
-                      className={`w-full px-3 py-2 cursor-pointer flex items-center justify-between text-[11px] group transition-colors text-left ${
-                        index === selectedSuggestionIndex ? "bg-ide-selection" : "bg-transparent"
-                      }`}
+                      className={`w-full px-3 py-2 cursor-pointer flex items-center justify-between text-[11px] group transition-colors text-left ${index === selectedSuggestionIndex ? "bg-ide-selection" : "bg-transparent"
+                        }`}
                       onClick={() => {
                         onCommand(cmd)
                         setInput("")
