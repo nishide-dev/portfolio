@@ -1,7 +1,7 @@
 import { IdeLayout } from "@/components/ide/layout"
 import { getAllFiles } from "@/lib/files"
 
-export default function Home() {
-  const fileSystem = getAllFiles()
+export default async function Home() {
+  const fileSystem = await getAllFiles()
   return <IdeLayout initialFileSystem={fileSystem} />
 }

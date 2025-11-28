@@ -1,7 +1,9 @@
 "use client"
 
 import { Briefcase, ChevronRight, Columns, Mail, Microscope, UserCircle, X } from "lucide-react"
+import { MDXRemote } from "next-mdx-remote"
 import ReactMarkdown from "react-markdown"
+import { ProjectGrid } from "@/components/mdx/project-grid"
 import type { FileData } from "@/lib/data"
 
 // Map icon strings to components
@@ -128,30 +130,48 @@ export function EditorArea({
             {/* Markdown Body */}
             <div className="flex-1 overflow-auto p-8 md:p-12">
               <div className="markdown-body max-w-3xl mx-auto">
-                <ReactMarkdown
-                  components={{
-                    a: ({ href, children }) => {
-                      const isInternal = href?.startsWith("/")
-                      return (
-                        <a
-                          href={href}
-                          onClick={(e) => {
-                            if (isInternal && href) {
-                              e.preventDefault()
-                              onOpenFile(href)
-                            }
-                          }}
-                          target={isInternal ? undefined : "_blank"}
-                          rel={isInternal ? undefined : "noopener noreferrer"}
-                        >
-                          {children}
-                        </a>
-                      )
-                    },
-                  }}
-                >
-                  {activeFile.content}
-                </ReactMarkdown>
+                {activeFile.lang === "mdx" && activeFile.serializedContent ? (
+                  <MDXRemote
+                    {...activeFile.serializedContent}
+                    components={{
+                      ProjectGrid: (props) => {
+                        // Pass projects from fileSystem to ProjectGrid
+                        // We filter for projects in 'works/' but exclude the index 'works' itself if needed
+                        const projects = Object.values(fileSystem).filter(
+                          (f) => f.id.startsWith("works/") && f.id !== "works"
+                        )
+                        return (
+                          <ProjectGrid {...props} projects={projects} onOpenFile={onOpenFile} />
+                        )
+                      },
+                    }}
+                  />
+                ) : (
+                  <ReactMarkdown
+                    components={{
+                      a: ({ href, children }) => {
+                        const isInternal = href?.startsWith("/")
+                        return (
+                          <a
+                            href={href}
+                            onClick={(e) => {
+                              if (isInternal && href) {
+                                e.preventDefault()
+                                onOpenFile(href)
+                              }
+                            }}
+                            target={isInternal ? undefined : "_blank"}
+                            rel={isInternal ? undefined : "noopener noreferrer"}
+                          >
+                            {children}
+                          </a>
+                        )
+                      },
+                    }}
+                  >
+                    {activeFile.content}
+                  </ReactMarkdown>
+                )}
               </div>
             </div>
           </div>
