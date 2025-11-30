@@ -1,6 +1,6 @@
 ---
 id: research
-filename: research.py
+filename: 研究.py
 icon: microscope
 pyModule: research_lab
 lang: python

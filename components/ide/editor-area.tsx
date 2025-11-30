@@ -3,6 +3,7 @@
 import { Briefcase, ChevronRight, Columns, Mail, Microscope, UserCircle, X } from "lucide-react"
 import { MDXRemote } from "next-mdx-remote"
 import ReactMarkdown from "react-markdown"
+import { IconList } from "@/components/mdx/icon-list"
 import { ProjectGrid } from "@/components/mdx/project-grid"
 import type { FileData } from "@/lib/data"
 
@@ -192,6 +193,7 @@ export function EditorArea({
                           <ProjectGrid {...props} projects={projects} onOpenFile={onOpenFile} />
                         )
                       },
+                      IconList: IconList,
                     }}
                   />
                 ) : (
