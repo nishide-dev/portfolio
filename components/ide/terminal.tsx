@@ -1,6 +1,7 @@
 "use client"
 
-import { ChevronRight, Columns, Plus, X } from "lucide-react"
+import { Columns, Plus, X } from "lucide-react"
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import type { FileData } from "@/lib/data"
 
@@ -147,7 +148,7 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
         <div className="absolute top-4 right-4 hidden md:block z-10 pointer-events-none opacity-80">
           <div className="border border-ide-accent/20 bg-ide-accent/5 rounded p-3 flex gap-3 max-w-xs shadow-sm">
             <div className="w-8 h-8 bg-ide-accent/10 rounded flex items-center justify-center text-ide-accent text-lg font-bold overflow-hidden">
-              <img src="/github-avatar.png" alt="Avatar" className="w-full h-full object-cover" />
+              <Image src="/github-avatar.png" alt="Avatar" fill className="object-cover" />
             </div>
             <div>
               <div className="text-[10px] font-bold text-ide-accent uppercase tracking-wide">

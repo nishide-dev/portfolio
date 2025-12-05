@@ -1,10 +1,8 @@
 "use client"
-
 import { Briefcase, ChevronRight, Columns, Mail, Microscope, UserCircle, X } from "lucide-react"
+import Image from "next/image"
 import ReactMarkdown from "react-markdown"
 import { IdeProvider } from "@/components/ide/ide-context"
-import { IconList } from "@/components/mdx/icon-list"
-import { ProjectGrid } from "@/components/mdx/project-grid"
 import type { FileData } from "@/lib/data"
 
 // Map icon strings to components
@@ -109,11 +107,12 @@ export function EditorArea({
           {!activeFile ? (
             /* Empty State */
             <div className="absolute inset-0 flex flex-col items-center justify-center text-ide-muted opacity-100 transition-opacity duration-300 z-10 bg-ide-bg">
-              <div className="w-20 h-20 mb-6 text-ide-accent opacity-40">
-                <img
+              <div className="w-20 h-20 mb-6 text-ide-accent opacity-40 relative">
+                <Image
                   src="/github-avatar.png"
                   alt="Zen Mode Logo"
-                  className="w-full h-full rounded-full object-cover"
+                  fill
+                  className="rounded-full object-cover"
                 />
               </div>
               <p className="text-sm tracking-[0.2em] uppercase opacity-80 font-bold text-ide-accent">
