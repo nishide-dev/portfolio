@@ -57,6 +57,11 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
 
   const handleSuggestionNavigation = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
+      case "Escape":
+        e.preventDefault()
+        setSuggestions([])
+        setSelectedSuggestionIndex(-1)
+        return true
       case "ArrowDown":
         e.preventDefault()
         setSelectedSuggestionIndex((prev) => (prev + 1) % suggestions.length)
@@ -109,7 +114,7 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
   }
 
   return (
-    <div className="h-[35%] bg-ide-bg flex flex-col border-t border-ide-border shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.02)] z-30 relative">
+    <div className="h-[25%] bg-ide-bg flex flex-col border-t border-ide-border shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.02)] z-30 relative">
       {/* Terminal Header */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-ide-border bg-ide-bg text-xs select-none">
         <div className="flex gap-5">
@@ -140,7 +145,7 @@ export function Terminal({ fileSystem, onCommand, onClear, history }: TerminalPr
       {/* Terminal Body */}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: Terminal body click focus */}
       <div
-        className="flex-1 flex flex-col overflow-hidden relative p-4 font-mono cursor-text"
+        className="flex-1 flex flex-col relative p-4 font-mono cursor-text"
         onClick={() => inputRef.current?.focus()}
         onKeyDown={() => inputRef.current?.focus()}
       >
