@@ -3,6 +3,7 @@ import path from "node:path"
 import matter from "gray-matter"
 import { compileMDX } from "next-mdx-remote/rsc"
 import { IconList } from "@/components/mdx/icon-list"
+import { ProfileHeader } from "@/components/mdx/profile-header"
 import { ProjectGrid } from "@/components/mdx/project-grid"
 import type { FileData } from "./data"
 
@@ -25,6 +26,7 @@ export async function getAllFiles(): Promise<Record<string, FileData>> {
         components: {
           IconList,
           ProjectGrid,
+          ProfileHeader,
         },
         options: {
           parseFrontmatter: true,
