@@ -98,8 +98,8 @@ export function EditorArea({
               key={tabId}
               onClick={() => onTabClick(tabId)}
               className={`h-full px-4 flex items-center gap-2 text-xs cursor-pointer select-none min-w-fit border-r border-ide-border group bg-transparent border-none ${isActive
-                  ? "bg-ide-bg text-ide-text border-t-2 border-t-ide-accent font-medium"
-                  : "bg-ide-panel text-ide-muted hover:bg-ide-bg/50 transition-colors"
+                ? "bg-ide-bg text-ide-text border-t-2 border-t-ide-accent font-medium"
+                : "bg-ide-panel text-ide-muted hover:bg-ide-bg/50 transition-colors"
                 }`}
             >
               <Icon size={14} className={isActive ? "text-ide-accent" : "text-ide-muted"} />
@@ -166,10 +166,10 @@ export function EditorArea({
                         <button
                           type="button"
                           className={`flex items-center bg-transparent border-none p-0 ${isLast
-                              ? "text-ide-text font-medium cursor-default"
-                              : isClickable
-                                ? "hover:text-ide-text cursor-pointer transition-colors"
-                                : "opacity-50 cursor-default"
+                            ? "text-ide-text font-medium cursor-default"
+                            : isClickable
+                              ? "hover:text-ide-text cursor-pointer transition-colors"
+                              : "opacity-50 cursor-default"
                             }`}
                           onClick={() => {
                             if (isClickable) {
@@ -185,7 +185,7 @@ export function EditorArea({
                   })
                 })()}
               </div>
-              <div className="ml-auto flex items-center gap-3">
+              <div className="ml-auto hidden md:flex items-center gap-3">
                 <span className="text-[10px] uppercase font-bold tracking-wider opacity-50">
                   Preview
                 </span>
