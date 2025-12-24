@@ -3,15 +3,21 @@ import { Copy, GitBranch, Search, Settings, UserCircle } from "lucide-react"
 import { useIdeContext } from "@/components/ide/ide-context"
 
 export function ActivityBar() {
-  const { setPaletteOpen, onOpenFile } = useIdeContext()
+  const { setPaletteOpen, onOpenFile, activeSidebarView, setActiveSidebarView } = useIdeContext()
   return (
     <div className="w-12 h-full bg-ide-panel border-r border-ide-border flex flex-col items-center py-3 gap-5 text-ide-muted shrink-0 z-40">
-      <div
+      <button
+        type="button"
         title="Explorer"
-        className="cursor-pointer border-l-2 border-ide-accent pl-3 -ml-3 box-content"
+        className={`cursor-pointer pl-3 -ml-3 box-content bg-transparent ${
+          activeSidebarView === "explorer"
+            ? "border-l-2 border-ide-accent text-ide-text"
+            : "hover:text-ide-text border-l-2 border-transparent"
+        }`}
+        onClick={() => setActiveSidebarView(activeSidebarView === "explorer" ? null : "explorer")}
       >
-        <Copy className="text-ide-text" size={20} />
-      </div>
+        <Copy className={activeSidebarView === "explorer" ? "text-ide-text" : ""} size={20} />
+      </button>
       <Search
         className="hover:text-ide-text cursor-pointer transition-colors"
         size={20}

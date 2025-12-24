@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { CommandPalette } from "@/components/ide/command-palette"
+import { Explorer } from "@/components/ide/explorer"
 import type { FileData } from "@/lib/data"
 import { ActivityBar } from "./activity-bar"
 import { EditorArea } from "./editor-area"
@@ -18,14 +19,13 @@ export function IdeLayout({ initialFileSystem, initialActiveId }: IdeLayoutProps
   const [fileSystem] = useState(initialFileSystem)
   // Initialize openTabs with the requested file if present
   const [openTabs, setOpenTabs] = useState<string[]>(
-    initialActiveId && initialActiveId !== "about"
-      ? ["about", initialActiveId]
-      : ["about"]
+    initialActiveId && initialActiveId !== "about" ? ["about", initialActiveId] : ["about"]
   )
   // Set active tab to the requested file, or 'about' as default
   const [activeTabId, setActiveTabId] = useState<string | null>(initialActiveId || "about")
   const [isPaletteOpen, setPaletteOpen] = useState(false)
   const [isSidebarOpen, setSidebarOpen] = useState(false)
+  const [activeSidebarView, setActiveSidebarView] = useState<string | null>("explorer")
 
   // Sync URL with active tab
   useEffect(() => {
@@ -90,14 +90,21 @@ export function IdeLayout({ initialFileSystem, initialActiveId }: IdeLayoutProps
         setPaletteOpen,
         isSidebarOpen,
         setSidebarOpen,
+        activeSidebarView,
+        setActiveSidebarView,
       }}
     >
       <div className="flex flex-col h-screen bg-ide-bg text-ide-text font-mono overflow-hidden">
         <TitleBar />
         <div className="flex-1 flex overflow-hidden">
           {/* Desktop Sidebar */}
-          <div className="hidden md:block h-full shrink-0">
+          <div className="hidden md:flex h-full shrink-0">
             <ActivityBar />
+            {activeSidebarView === "explorer" && (
+              <div className="w-64 h-full">
+                <Explorer fileSystem={fileSystem} activeTabId={activeTabId} onOpenFile={openFile} />
+              </div>
+            )}
           </div>
 
           {/* Mobile Sidebar (Drawer) */}

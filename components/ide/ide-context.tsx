@@ -11,6 +11,8 @@ interface IdeContextType {
   setPaletteOpen: (isOpen: boolean) => void
   isSidebarOpen: boolean
   setSidebarOpen: (isOpen: boolean) => void
+  activeSidebarView: string | null
+  setActiveSidebarView: (view: string | null) => void
 }
 
 const IdeContext = createContext<IdeContextType | null>(null)

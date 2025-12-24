@@ -99,7 +99,7 @@ export function CommandPalette({ isOpen, onClose, fileSystem, onOpenFile }: Comm
               key={file.id}
               type="button"
               className={`w-full px-4 py-2 flex items-center gap-3 text-left transition-colors ${
-                index === selectedIndex ? "bg-ide-selection" : "hover:bg-ide-panel"
+                index === selectedIndex ? "bg-ide-selection/30" : "hover:bg-ide-panel"
               }`}
               onClick={() => {
                 onOpenFile(file.id)
@@ -107,9 +107,16 @@ export function CommandPalette({ isOpen, onClose, fileSystem, onOpenFile }: Comm
               }}
               onMouseEnter={() => setSelectedIndex(index)}
             >
-              <FileText size={16} className="text-ide-muted" />
+              <FileText
+                size={16}
+                className={index === selectedIndex ? "text-ide-accent" : "text-ide-muted"}
+              />
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-ide-text truncate">{file.filename}</div>
+                <div
+                  className={`text-sm font-medium truncate Transition-colors ${index === selectedIndex ? "text-ide-accent" : "text-ide-text"}`}
+                >
+                  {file.filename}
+                </div>
                 <div className="text-xs text-ide-muted truncate font-mono opacity-60">
                   {file.id}
                 </div>
